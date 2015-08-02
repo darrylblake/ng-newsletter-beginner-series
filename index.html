@@ -5,10 +5,16 @@
     <script src="js/main.js"></script>
   </head>
   <body>
+
     <div ng-controller="PlayerController">
+      {{ audio }}
       <button ng-click="play()" class="button" ng-show="!playing">Play</button>
       <button ng-click="stop()" class="button alert" ng-show="playing">Stop</button>
       Playing audio: <b>{{ playing }}</b>
+
+      <ul>
+        <li ng-repeat='item in programs'>{{ item.id }}</li>
+      </ul>
     </div>
   </body>
 </html>
