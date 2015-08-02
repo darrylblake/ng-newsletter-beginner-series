@@ -2,12 +2,32 @@ var app = angular.module('myApp', []);
 var apiKey = 'MDIwMDQwNzgyMDE0Mzg0NzM4OTMwYzkzNw001';
 var nprUrl = 'http://api.npr.org/query?id=61&fields=relatedLink,title,byline,text,audio,image,pullQuote,all&output=JSON';
 
+// creating my own directive
+app.directive('nprLink', function() {
+  return {
+    restrict: 'EA',
+    require: ['^ngModel'],
+    replace: true,
+    scope: {
+      ngModel: '=',
+      play: '&'
+    },
+    templateUrl: 'views/nprListItem.html',
+    link: function(scope, ele, attr) {
+      scope.duration = scope.ngModel.audio[0].duration.$text;
+    }
+  }
+});
+
 
 app.controller('PlayerController', function($scope, $http) {
   $scope.playing = false;
   $scope.audio = document.createElement('audio');
-  $scope.audio.src = 'http://www.stephaniequinn.com/Music/Hungarian%20Dance.mp3';
-  $scope.play = function() {
+  //$scope.audio.src = 'http://www.stephaniequinn.com/Music/Hungarian%20Dance.mp3';
+  $scope.play = function(program) {
+    if ($scope.playing) $scope.audio.pause();
+    var url = program.audio[0].format.mp4.$text;
+    $scope.audio.src = url;
     $scope.audio.play();
     $scope.playing = true;
   };
